@@ -2,47 +2,85 @@ const questions = [
 	{
 		question: "Жалобы, анамнез заболевания:",
 		answers: [
-			"Наличие в анамнезе заболеваний ССС, в том числе мерцательной аритмии, сахарного диабета, атеросклероза сосудов нижних конечностей.",
-			"Снижение массы тела, постпрандиальный болевой синдром, боязнь приёма пищи.",
-			"Ничего из вышеперечисленного."],
-		nextQuestion: [1, 1, 6]
+			{
+				text: "Наличие в анамнезе заболеваний ССС, в том числе мерцательной аритмии, сахарного диабета, атеросклероза сосудов нижних конечностей.",
+				nextQuestion: 1,
+			},
+			{
+				text: "Снижение массы тела, постпрандиальный болевой синдром, боязнь приёма пищи.",
+				nextQuestion: 1,
+			},
+			{
+				text: "Ничего из вышеперечисленного.",
+				nextQuestion: 6,
+			}
+		]
 	},
 	{
 		question: "Необходимо исследование коагулограммы и липидного спектра крови с определением АЧТВ и уровня D-диммеров в крови, уровня триглицеридов, липопротеидов высокой и низкой плотности. <p>Также необходимо дуплексное ангиосканирование мезентериального кровотока. <p><p><p><p>Были ли обнаружены нарушения проходимости по брыжеечным сосудам?",
 		answers: [
-			"Да.",
-			"Нет.",
-		],
-		nextQuestion: [2, 2]
+			{
+				text: "Да.",
+				nextQuestion: 2,
+			},
+			{
+				text: "Нет.",
+				nextQuestion: 2,
+			}
+		]
 	},
 	{
 		question: "Необходимо выполнение фиброколоноскопии + мультифокальная биопсия. Результаты:",
 		answers: [
-			"Опухоль толстой кишки.",
-			"Ишемическое повреждение.",
-			"Хронический колит, НЯК, БК.",
-		],
-		nextQuestion: [3, 4, 5]
+			{
+				text: "Опухоль толстой кишки.",
+				nextQuestion: 3,
+			},
+			{
+				text: "Ишемическое повреждение.",
+				nextQuestion: 4,
+			},
+			{
+				text: "Хронический колит, НЯК, БК.",
+				nextQuestion: 5,
+			}
+		]
 	},
 	{
 		question: "Необходимо лечение у онколога.",
-		answers: ["Начать заново."],
-		nextQuestion: [0]
+		answers: [
+			{
+				text: "Начать заново.",
+				nextQuestion: 0,
+			}
+		]
 	},
 	{
 		question: "Необходимо проведение ангиографии, КТ-ангиографии, МР-ангиографии.",
-		answers: ["Начать заново."],
-		nextQuestion: [0]
+		answers:  [
+			{
+				text: "Начать заново.",
+				nextQuestion: 0,
+			}
+		]
 	},
 	{
 		question: "Необходимо лечение у гастроэнтеролога, колопроктолога.",
-		answers: ["Начать заново."],
-		nextQuestion: [0]
+		answers:  [
+			{
+				text: "Начать заново.",
+				nextQuestion: 0,
+			}
+		]
 	},
 	{
 		question: "У пациента отсутствует хроническая мезентериальная ишемия.",
-		answers: ["Начать заново."],
-		nextQuestion: [0]
+		answers:  [
+			{
+				text: "Начать заново.",
+				nextQuestion: 0,
+			}
+		]
 	},
 ];
 
@@ -67,9 +105,7 @@ function showQuestion() {
 	const title = headerTemplate.replace('%title%', questions[questionIndex]['question']);
 	headerContainer.innerHTML = title;
 	listContainer.innerHTML = '';
-
-	let answerNumber = 0;
-	for (answerText of questions[questionIndex]['answers']) {
+	for (answer of questions[questionIndex]['answers']) {
 		const questionTemplate =
 			`<li>
 				<label>
@@ -79,10 +115,9 @@ function showQuestion() {
 			</li>`;
 		
 			const answerHTML = questionTemplate
-							.replace('%answer%', answerText)
-							.replace('%nextquestion%', questions[questionIndex].nextQuestion[answerNumber]);
+							.replace('%answer%', answer.text)
+							.replace('%nextquestion%', answer.nextQuestion);
 			listContainer.innerHTML += answerHTML;
-			answerNumber++;
 	}
 
 
@@ -95,5 +130,6 @@ function checkAnswer() {
 		return;
 	}
 	questionIndex = checkedRadio.getAttribute('nextquestion');
+	submitBtn.blur();
 	showQuestion();
 }
